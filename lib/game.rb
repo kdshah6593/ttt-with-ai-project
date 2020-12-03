@@ -1,6 +1,6 @@
 class Game
 
-    attr_accessor :board, :player_1, :player_2
+    attr_accessor :board, :player_1, :player_2, :last_move
 
     WIN_COMBINATIONS = [
         [0,1,2], #Top Row
@@ -17,6 +17,7 @@ class Game
         @board = board
         @player_1 = player_1
         @player_2 = player_2
+        @last_move = nil
     end
 
     def current_player
@@ -55,12 +56,14 @@ class Game
     def turn
         player = self.current_player
         puts "'#{player.token}' choose a position 1-9:"
-        input = player.move
-        if self.board.valid_move?(input) == true
-            self.board.update(input, player)
+        current_move = player.move
+        if self.board.valid_move?(current_move) == true
+            self.board.update(current_move, player)
+            @last_move = current_move
         else
             turn
         end
+        self.board.display
     end
 
     def play
